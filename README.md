@@ -5,7 +5,17 @@ A full featured directions plugin for [mapbox-gl-js](https://github.com/mapbox/m
 
 ### Usage
 
-See https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-directions/
+~~~~
+npm install
+~~~~
+
+Add mapbox token to example/index.js
+
+~~~~
+npm run start
+~~~~
+
+Browse to http://localhost
 
 ### Deeper dive
 
