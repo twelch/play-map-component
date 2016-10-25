@@ -1,6 +1,7 @@
 import * as types from '../constants/action_types';
 import utils from '../utils';
 const request = new XMLHttpRequest();
+import mapboxgl from 'mapbox-gl';
 
 function originPoint(coordinates) {
   return (dispatch) => {

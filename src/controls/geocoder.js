@@ -4,6 +4,7 @@ var Typeahead = require('suggestions');
 var debounce = require('lodash.debounce');
 var extend = require('xtend');
 var EventEmitter = require('events').EventEmitter;
+import mapboxgl from 'mapbox-gl';
 
 // Mapbox Geocoder version
 var API = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';

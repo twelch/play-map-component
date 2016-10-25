@@ -68,7 +68,8 @@ export default class Inputs {
     this.originInput = new Geocoder(Object.assign({}, {
       flyTo: false,
       placeholder: 'Choose a starting place',
-      container: this.container.querySelector('#mapbox-directions-origin-input')
+      container: this.container.querySelector('#mapbox-directions-origin-input'),
+      accessToken: this.store.getState().accessToken
     }, geocoder));
 
     this._map.addControl(this.originInput);

@@ -1,11 +1,18 @@
-import { createStore, applyMiddleware, bindActionCreators } from 'redux';
+import { createStore, applyMiddleware, compose, bindActionCreators } from 'redux';
 import thunk from 'redux-thunk';
 import { decode } from 'polyline';
 import utils from './utils';
 import rootReducer from './reducers';
+import mapboxgl from 'mapbox-gl';
 
-const storeWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = storeWithMiddleware(rootReducer);
+//const storeWithMiddleware = applyMiddleware(thunk)(createStore);
+//const store = storeWithMiddleware(rootReducer);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(
+  applyMiddleware(thunk)
+));
+
 
 // State object management via redux
 import * as actions from './actions';
@@ -26,23 +33,39 @@ export default class Directions {
     this.onDragUp = this._onDragUp.bind(this);
     this.move = this._move.bind(this);
     this.onClick = this._onClick.bind(this);
-  }
 
-  addTo(map) {
-      this._map = map;
-      var container = this._container = this.onAdd(map);
-      if (this.options && this.options.position) {
-          var pos = this.options.position;
-          var corner = map._controlCorners[pos];
-          container.className += ' mapboxgl-ctrl';
-          if (pos.indexOf('bottom') !== -1) {
-              corner.insertBefore(container, corner.firstChild);
-          } else {
-              corner.appendChild(container);
-          }
-      }
+    mapboxgl.accessToken = options.accessToken;
+    var map = new mapboxgl.Map({
+      hash: true,
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [-79.4512, 43.6568],
+      zoom: 13
+    });
 
-      return this;
+    var button = document.createElement('button');
+    button.textContent = 'click me';
+    map.getContainer().querySelector('.mapboxgl-ctrl-bottom-left').appendChild(button);
+
+    map.on('load', () => {
+      button.addEventListener('click', function() {
+        directions.setOrigin([-79.4512, 43.6568]);
+        directions.setDestination('Montreal Quebec');
+      });
+    });
+
+    var container = this._container = this.onAdd(map);
+
+    if (this.options && this.options.position) {
+        var pos = this.options.position;
+        var corner = map._controlCorners[pos];
+        container.className += ' mapboxgl-ctrl';
+        if (pos.indexOf('bottom') !== -1) {
+            corner.insertBefore(container, corner.firstChild);
+        } else {
+            corner.appendChild(container);
+        }
+    }
   }
 
   onAdd(map) {
