@@ -15,7 +15,7 @@ Add mapbox token to example/index.js
 npm run start
 ~~~~
 
-Browse to http://localhost
+Browse to http://localhost:9966/example
 
 ### Deeper dive
 
